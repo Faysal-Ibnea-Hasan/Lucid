@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
 use App\Services\ValidationServices;
@@ -21,8 +20,8 @@ class AdminController extends Controller
         } else {
             $admin = Admin::create([
                 'email' => $request->email,
-                'password' => $request->password,
-                // 'password' => Hash::make($request->password),
+                // 'password' => $request->password,
+                'password' => Hash::make($request->password),
             ]);
             return response()->json([
                 'massage' => 'Admin created successfully',
@@ -34,9 +33,10 @@ class AdminController extends Controller
     {
         $email = $request->email;
         $password = $request->password;
-        $data = Admin::where('email', $email)->where('password', $password)->first();
+        $data = Admin::where('email', $email)->first();
+        $hashPassword = Hash::check($password, $data->password);
         // dd($data);
-        if ($data) {
+        if ($data && $hashPassword) {
             Session::put(['admin_Id' => $data->email]);
             $lol2 = Session::get('admin_Id');
             // dd($lol2);
