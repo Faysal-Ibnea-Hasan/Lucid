@@ -19,11 +19,10 @@ class AdminAuth
     public function handle(Request $request, Closure $next): Response
     {
         if (!Session::has('admin_Id')) {
-             return response()->json([
+            return response()->json([
                 'massage' => 'You must be logged in!'
             ]);
-        }
-        else{
+        } else {
             // return response()->json([
             //     'massage' => 'You are already logged in!'
             // ]);
