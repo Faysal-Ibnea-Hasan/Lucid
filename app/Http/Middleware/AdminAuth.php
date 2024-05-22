@@ -14,18 +14,20 @@ class AdminAuth
     /**
      * Handle an incoming request.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param \Illuminate\Http\Request $request - The current HTTP request.
+     * @param \Closure $next - The next middleware to call.
+     * @return \Symfony\Component\HttpFoundation\Response - The response to the client.
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // Check if the admin_Id is present in the session
         if (!Session::has('admin_Id')) {
+            // If not present, return a JSON response indicating the user must be logged in
             return response()->json([
-                'massage' => 'You must be logged in!'
+                'message' => 'You must be logged in!'
             ]);
         } else {
-            // return response()->json([
-            //     'massage' => 'You are already logged in!'
-            // ]);
+            // If present, proceed to the next middleware or request handler
             return $next($request);
         }
     }

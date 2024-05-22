@@ -7,59 +7,77 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
-use App\Services\ValidationServices;
+use App\Http\Requests\AdminLoginRequest;
 
 class AdminController extends Controller
 {
-    public function create_admin(Request $request)
+    /**
+     * Create a new admin user.
+     *
+     * @param AdminLoginRequest $request - Validated request containing the admin's email and password.
+     * @return \Illuminate\Http\JsonResponse - JSON response with a success message and the created admin data.
+     */
+    public function create_admin(AdminLoginRequest $request)
     {
+        // Create a new admin with the provided email and hashed password
+        $admin = Admin::create([
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-        $data_validated = ValidationServices::admin_validation($request->all());
-        if ($data_validated->fails()) {
-            return response()->json(['errors' => $data_validated->errors()], 400);
-        } else {
-            $admin = Admin::create([
-                'email' => $request->email,
-                // 'password' => $request->password,
-                'password' => Hash::make($request->password),
-            ]);
-            return response()->json([
-                'massage' => 'Admin created successfully',
-            ]);
-        }
+        // Return a JSON response indicating successful creation
+        return response()->json([
+            'message' => 'Admin created successfully',
+            'data' => $admin
+        ], 201);
     }
 
-    public function login_admin(Request $request)
+    /**
+     * Handle admin login.
+     *
+     * @param AdminLoginRequest $request - Validated request containing the admin's email and password.
+     * @return \Illuminate\Http\JsonResponse - JSON response indicating success or failure of authentication.
+     */
+    public function login_admin(AdminLoginRequest $request)
     {
+        // Retrieve email and password from the request
         $email = $request->email;
         $password = $request->password;
-        $data = Admin::where('email', $email)->first();
-        $hashPassword = Hash::check($password, $data->password);
-        // dd($data);
-        if ($data && $hashPassword) {
-            Session::put(['admin_Id' => $data->email]);
-            $lol2 = Session::get('admin_Id');
-            // dd($lol2);
-            return response()->json([
-                'massage' => 'Admin authenticated',
-                'session' => $lol2
-            ]);
 
-        } else {
+        // Find the admin by email
+        $admin = Admin::where('email', $email)->first();
+
+        // Check if admin exists and the provided password matches the stored hashed password
+        if ($admin && Hash::check($password, $admin->password)) {
+            // Store the admin's email in session to indicate successful login
+            Session::put('admin_Id', $admin->email);
+
+            // Return a JSON response indicating successful authentication
             return response()->json([
-                'massage' => 'Admin is not authenticated'
-            ]);
+                'message' => 'Admin authenticated',
+                'session' => Session::get('admin_Id'),
+            ], 200);
         }
+
+        // Return a JSON response indicating invalid credentials
+        return response()->json([
+            'message' => 'Invalid credentials',
+        ], 401);
     }
 
+    /**
+     * Handle admin logout.
+     *
+     * @return \Illuminate\Http\JsonResponse - JSON response indicating successful logout.
+     */
     public function logout_admin()
     {
+        // Remove the admin's email from the session
         Session::forget('admin_Id');
+
+        // Return a JSON response indicating successful logout
         return response()->json([
-            'massage' => 'Logged out!'
+            'message' => 'Logged out!'
         ]);
     }
-
-
-
 }
