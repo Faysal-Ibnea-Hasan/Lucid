@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
 use App\Http\Requests\AdminLoginRequest;
 
+
 class AdminController extends Controller
 {
     /**
@@ -52,11 +53,14 @@ class AdminController extends Controller
             // Store the admin's email in session to indicate successful login
             Session::put('admin_Id', $admin->email);
 
+            $token =  $admin->createToken('lucid')->plainTextToken;
+            $cookie = cookie('jwt', $token, 60*24);
             // Return a JSON response indicating successful authentication
             return response()->json([
                 'message' => 'Admin authenticated',
                 'session' => Session::get('admin_Id'),
-            ], 200);
+                'token' => $token
+            ], 200)->withCookie($cookie);
         }
 
         // Return a JSON response indicating invalid credentials

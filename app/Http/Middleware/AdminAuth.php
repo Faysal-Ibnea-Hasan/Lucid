@@ -25,7 +25,7 @@ class AdminAuth
             // If not present, return a JSON response indicating the user must be logged in
             return response()->json([
                 'message' => 'You must be logged in!'
-            ]);
+            ],401);
         } else {
             // If present, proceed to the next middleware or request handler
             return $next($request);

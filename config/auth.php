@@ -40,10 +40,16 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
-    'admin' => [
-            'driver' => 'session',
-            'provider' => 'admins', // Custom provider for admins
-        ],
+
+        'api' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+        ],//For model Admin
+
+        'admin-api' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
+        ],//For model Admin
     ],
 
     /*
@@ -73,10 +79,11 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
+
         'admins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class, // Admin model
-        ],
+        ],//For model Admin
     ],
 
     /*
