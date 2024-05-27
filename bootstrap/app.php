@@ -7,6 +7,8 @@ use Illuminate\Session\Middleware\StartSession;// have to import for using sessi
 use Illuminate\View\Middleware\ShareErrorsFromSession;// have to import for using sessions in api
 use App\Http\Middleware\HandleInertiaRequests;
 
+
+
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__ . '/../routes/web.php',
@@ -15,13 +17,17 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
         $middleware->web(append: [
             HandleInertiaRequests::class,
         ]);
         $middleware->api(append: [
             StartSession::class,
-            ShareErrorsFromSession::class
+            ShareErrorsFromSession::class,
+
         ]);// have to append for using sessions in api
+
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

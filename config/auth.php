@@ -43,13 +43,13 @@ return [
 
         'api' => [
             'driver' => 'sanctum',
-            'provider' => 'admins',
+            'provider' => 'users',
         ],//For model Admin
 
-        'admin-api' => [
-            'driver' => 'sanctum',
-            'provider' => 'admins',
-        ],//For model Admin
+        // 'admin-api' => [
+        //     'driver' => 'sanctum',
+        //     'provider' => 'admins',
+        // ],//For model Admin
     ],
 
     /*
@@ -72,7 +72,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', App\Models\User::class),
+            'model' => env('AUTH_MODEL', App\Models\Admin::class),
         ],
 
         // 'users' => [
@@ -80,10 +80,10 @@ return [
         //     'table' => 'users',
         // ],
 
-        'admins' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\Admin::class, // Admin model
-        ],//For model Admin
+        // 'admins' => [
+        //     'driver' => 'eloquent',
+        //     'model' => App\Models\Admin::class, // Admin model
+        // ],//For model Admin
     ],
 
     /*
