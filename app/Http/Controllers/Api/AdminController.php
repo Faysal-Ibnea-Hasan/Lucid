@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
 use App\Http\Requests\AdminLoginRequest;
 use Illuminate\Support\Facades\Auth;
+use Cookie;
 
 
 class AdminController extends Controller
@@ -69,7 +70,7 @@ class AdminController extends Controller
     //         'message' => 'Invalid credentials',
     //     ], 401);
     // }
-    public function login_admin(Request $request)
+    public function login_admin(AdminLoginRequest $request)
     {
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $user = Auth::user();
@@ -99,8 +100,9 @@ class AdminController extends Controller
     {
     //     // Remove the admin's email from the session
     //     Session::forget('admin_Id');
-       $cookie = cookie()->forget('jwt');
-       dd($cookie);
+    //    $cookie = cookie()->forget('jwt');
+       $cookie = Cookie::forget('jwt');
+       
     // $request->user()->currentAccessToken()->delete();
 
         // Return a JSON response indicating successful logout

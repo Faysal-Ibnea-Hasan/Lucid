@@ -20,10 +20,15 @@ class Authenticate extends Middleware
         $jwt = $request->cookie('jwt');
         if ($jwt) {
             $request->headers->set('Authorization', 'Bearer ' . $jwt);
+            $this->authenticate($request, $guards);
+
+            return $next($request);
+        }
+        else{
+            return response()->json([
+                'message' =>'Jwt not found',
+            ],401);
         }
 
-        $this->authenticate($request, $guards);
-
-        return $next($request);
     }
 }
