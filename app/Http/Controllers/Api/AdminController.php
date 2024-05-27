@@ -5,11 +5,13 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
 use App\Http\Requests\AdminLoginRequest;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Cookie;
+
+// use Illuminate\Support\Facades\Session;
 
 
 class AdminController extends Controller
@@ -33,6 +35,26 @@ class AdminController extends Controller
             'message' => 'Admin created successfully',
             'data' => $admin
         ], 201);
+    }
+    public function update_admin(Request $request)
+    {
+        try {
+            $find_admin = Admin::findOrFail($request->id);
+            $update_admin = $find_admin->update([
+                'email' => $request->email ?? $find_admin->email,
+                'role' => $request->role ?? $find_admin->role,
+                'status' => $request->status ?? $find_admin->status
+            ]);
+            return response()->json([
+                'message' => 'Admin updated successfully',
+                'data' => $update_admin
+            ], 201);
+        } catch (ModelNotFoundException $exception) {
+            return response()->json([
+                'error' => 'User not found',
+            ], 404);
+        }
+
     }
 
     /**
@@ -72,20 +94,19 @@ class AdminController extends Controller
     // }
     public function login_admin(AdminLoginRequest $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
+        if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $success['token'] =  $user->createToken('MyApp')->plainTextToken;
-            $cookie = cookie('jwt', $success['token'], 60*24);
+            $success['token'] = $user->createToken('MyApp')->plainTextToken;
+            $cookie = cookie('jwt', $success['token'], 60 * 24);
 
 
             return response()->json([
-                'message'=> 'User login successfully.',
+                'message' => 'User login successfully.',
                 $success,
             ])->withCookie($cookie);
-        }
-        else{
+        } else {
             return response()->json([
-                'message'=> 'Unauthorized',
+                'message' => 'Unauthorized',
 
             ]);
         }
@@ -98,12 +119,12 @@ class AdminController extends Controller
      */
     public function logout_admin(Request $request)
     {
-    //     // Remove the admin's email from the session
-    //     Session::forget('admin_Id');
-    //    $cookie = cookie()->forget('jwt');
-       $cookie = Cookie::forget('jwt');
-       
-    // $request->user()->currentAccessToken()->delete();
+        //     // Remove the admin's email from the session
+        //     Session::forget('admin_Id');
+        //    $cookie = cookie()->forget('jwt');
+        $cookie = Cookie::forget('jwt');
+
+        // $request->user()->currentAccessToken()->delete();
 
         // Return a JSON response indicating successful logout
         return response()->json([
@@ -111,7 +132,8 @@ class AdminController extends Controller
         ])->withCookie($cookie);
     }
 
-    public function test(Request $request){
+    public function test(Request $request)
+    {
         $jwt = $request->cookie('jwt');
         return response()->json([
             'massage' => 'this is only for authenticated users',
