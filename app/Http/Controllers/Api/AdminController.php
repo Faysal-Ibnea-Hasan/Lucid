@@ -96,7 +96,7 @@ class AdminController extends Controller
     {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
             $user = Auth::user();
-            $success['token'] = $user->createToken('MyApp')->plainTextToken;
+            $success['token'] = $user->createToken($user->role)->plainTextToken;
             $cookie = cookie('jwt', $success['token'], 60 * 24);
 
 
@@ -119,12 +119,7 @@ class AdminController extends Controller
      */
     public function logout_admin(Request $request)
     {
-        //     // Remove the admin's email from the session
-        //     Session::forget('admin_Id');
-        //    $cookie = cookie()->forget('jwt');
         $cookie = Cookie::forget('jwt');
-
-        // $request->user()->currentAccessToken()->delete();
 
         // Return a JSON response indicating successful logout
         return response()->json([

@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Middleware\Authenticate;
 
 
@@ -17,4 +18,9 @@ Route::controller(AdminController::class)->group(function () {
     Route::post('/update_admins', 'update_admin');
     Route::post('/logout_admins','logout_admin')->middleware(Authenticate::class);
     Route::post('/test','test')->middleware(Authenticate::class);
+});
+//================================================UserController===============================================
+Route::controller(UserController::class)->group(function () {
+    Route::post('/create_users', 'create_user');
+
 });
