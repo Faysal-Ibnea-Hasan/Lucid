@@ -19,12 +19,12 @@ return new class extends Migration
             $table->String('password');
             $table->String('nid');
             $table->String('address');
-            $table->String('thana');
-            $table->String('zilla');
-            $table->String('district');
-            $table->String('division');
+            $table->String('thana')->nullable();
+            $table->String('zilla')->nullable();
+            $table->String('district')->nullable();
+            $table->String('division')->nullable();
             $table->String('image');
-            $table->String('subscription');
+            $table->String('subscription')->nullable();
             $table->timestamps();
         });
     }

@@ -59,19 +59,19 @@ class CustomUser extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'mobile',
-        'password',
-        'nid',
-        'address',
-        'thana',
-        'zilla',
-        'district',
-        'division',
-        'image',
-        'subscription',
-    ];
+    // protected $fillable = [
+    //     'name',
+    //     'mobile',
+    //     'password',
+    //     'nid',
+    //     'address',
+    //     'thana',
+    //     'zilla',
+    //     'district',
+    //     'division',
+    //     'subscription',
+    // ];
+
 
     /**
      * The attributes that should be hidden for serialization.
@@ -85,14 +85,14 @@ class CustomUser extends Authenticatable
      *
      * @var array
      */
-    protected $attributes = [
-        'thana' => 'not selected',
-        'zilla' => 'not selected',
-        'district' => 'not selected',
-        'division' => 'not selected',
-        'image' => 'not uploaded',
-        'subscription' => 'no package'
-    ];
+    // protected $attributes = [
+    //     'thana' => 'not selected',
+    //     'zilla' => 'not selected',
+    //     'district' => 'not selected',
+    //     'division' => 'not selected',
+    //     'image' => 'not uploaded',
+    //     'subscription' => 'no package'
+    // ];
 
     /**
      * The attributes that should be cast to native types.
