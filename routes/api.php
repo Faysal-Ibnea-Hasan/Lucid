@@ -22,5 +22,6 @@ Route::controller(AdminController::class)->group(function () {
 //================================================UserController===============================================
 Route::controller(UserController::class)->group(function () {
     Route::post('/create_users', 'create_user');
+    Route::post('/login_users', 'login_user');
 
 });

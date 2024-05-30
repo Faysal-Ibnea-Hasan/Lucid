@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\CustomUser;
 use Illuminate\Http\Request;
 use App\Http\Requests\UserCreateRequest;
+use App\Http\Requests\UserLoginRequest;
 use Illuminate\Support\Facades\Storage;
+use Auth;
 
 
 class UserController extends Controller
@@ -44,5 +46,28 @@ class UserController extends Controller
             'message' => 'User created successfully',
             'data' => $user
         ], 201); // 201 (Created) status code
+    }
+    public function login_user(UserLoginRequest $request)
+    {
+        if (Auth::guard('customuser')->attempt(['mobile' => $request->mobile, 'password' => $request->password])) {
+            // $user = Auth::user();
+            // $success['token'] = $user->createToken($user->role)->plainTextToken;
+            // $cookie = cookie('jwt', $success['token'], 60 * 24);
+
+
+            // return response()->json([
+            //     'message' => 'User login successfully.',
+            //     $success,
+            // ])->withCookie($cookie);
+            return response()->json([
+                'message' => 'Authentication successful',
+
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Unauthorized',
+
+            ]);
+        }
     }
 }

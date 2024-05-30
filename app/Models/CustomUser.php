@@ -46,6 +46,7 @@ class CustomUser extends Authenticatable
 
         return $id;
     }
+    protected $guard = 'customuser';
 
     /**
      * The database table used by the model.

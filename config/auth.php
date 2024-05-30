@@ -40,6 +40,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customuser' => [
+            'driver' => 'session',
+            'provider' => 'customusers',
+        ],
 
         'api' => [
             'driver' => 'sanctum',
@@ -73,6 +77,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => env('AUTH_MODEL', App\Models\Admin::class),
+        ],
+        'customusers' => [
+            'driver' => 'eloquent',
+            'model' =>  App\Models\CustomUser::class,
         ],
 
         // 'users' => [
