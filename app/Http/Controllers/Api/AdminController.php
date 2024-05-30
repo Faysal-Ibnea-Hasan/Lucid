@@ -98,17 +98,16 @@ class AdminController extends Controller
             $user = Auth::user();
             $success['token'] = $user->createToken($user->role)->plainTextToken;
             $cookie = cookie('jwt', $success['token'], 60 * 24);
-
-
+            
             return response()->json([
                 'message' => 'User login successfully.',
                 $success,
-            ])->withCookie($cookie);
+            ],200)->withCookie($cookie);
         } else {
             return response()->json([
                 'message' => 'Unauthorized',
 
-            ]);
+            ],401);
         }
     }
 
