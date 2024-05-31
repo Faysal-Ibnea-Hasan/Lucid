@@ -2,10 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+//================================================Middlewares================================================
+use App\Http\Middleware\Authenticate;
+//================================================Controllers================================================
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CategoryController;
-use App\Http\Middleware\Authenticate;
 
 
 Route::get('/user', function (Request $request) {
