@@ -9,6 +9,7 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserLoginRequest;
 use Illuminate\Support\Facades\Storage;
 use Auth;
+use Log;
 
 
 class UserController extends Controller
@@ -52,7 +53,10 @@ class UserController extends Controller
         if (Auth::guard('customuser')->attempt(['mobile' => $request->mobile, 'password' => $request->password])) {
             $user = Auth::guard('customuser')->user();
             $token = $user->createToken('user')->plainTextToken;
+            // Log the token creation
+        Log::info('Token created: ' . $token);
             $cookie = cookie('jwt', $token, 60 * 24); // 1 day
+            
 
 
             return response()->json([
