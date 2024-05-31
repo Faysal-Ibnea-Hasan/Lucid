@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CategoryController;
 use App\Http\Middleware\Authenticate;
 
 
@@ -23,5 +24,12 @@ Route::controller(AdminController::class)->group(function () {
 Route::controller(UserController::class)->group(function () {
     Route::post('/create_users', 'create_user');
     Route::post('/login_users', 'login_user');
+
+});
+//================================================CategoryController===============================================
+Route::controller(CategoryController::class)->group(function () {
+    Route::post('/create_categories', 'create_category');
+    Route::post('/update_categories', 'update_category');
+
 
 });
