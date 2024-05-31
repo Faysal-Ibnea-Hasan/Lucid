@@ -105,22 +105,30 @@ class CategoryController extends Controller
             ], 404);
         }
     }
-    public function delete_category(Request $request)
-    {
-        try {
-            $category = Category::findOrFail($request->id);
-            $category->delete();
-            // Return a JSON response with a success message and the updated category data.
-            return response()->json([
-                'message' => 'Category deleted successfully',
-
-            ], 200);
-        } catch (ModelNotFoundException $exception) {
-            // Return a JSON response with an error message if the category is not found.
-            return response()->json([
-                'error' => 'Category not found',
-            ], 404);
-        }
+    /**
+ * Deletes a category from the database.
+ *
+ * @param Request $request The request object containing the category ID.
+ * @return \Illuminate\Http\JsonResponse A JSON response indicating the success or failure of the deletion.
+ */
+public function delete_category(Request $request)
+{
+    try {
+        // Find the category by ID or throw a ModelNotFoundException if not found.
+        $category = Category::findOrFail($request->id);
+        // Delete the category.
+        $category->delete();
+        // Return a JSON response with a success message.
+        return response()->json([
+            'message' => 'Category deleted successfully',
+        ], 200);
+    } catch (ModelNotFoundException $exception) {
+        // Return a JSON response with an error message if the category is not found.
+        return response()->json([
+            'error' => 'Category not found',
+        ], 404);
     }
+}
+
 
 }
